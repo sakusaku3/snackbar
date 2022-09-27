@@ -1,0 +1,119 @@
+﻿<Window x:Class="snackbar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:snackbar"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+	<Window.DataContext>
+		<local:MainViewModel/>
+	</Window.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<GroupBox Grid.Row="0" Grid.Column="0" Header="メッセージのみ">
+			<Grid>
+				<StackPanel VerticalAlignment="Center">
+					<TextBlock Text="Snackbarにメッセージのみを表示する場合"/>
+					<ToggleButton IsChecked="{Binding ElementName=Snack1, Path=IsActive, Mode=TwoWay}"
+                                Margin="10"/>
+				</StackPanel>
+
+				<materialDesign:Snackbar Name="Snack1" Message="Snackbar Message" IsActive="False"/>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Grid.Row="0" Grid.Column="1" Header="Action Button付き">
+			<Grid>
+				<StackPanel VerticalAlignment="Center">
+					<TextBlock Text="Actionボタン付きSnackbar"/>
+					<TextBlock Text="Actionボタンが押されるとActionClickイベントが発生する"/>
+					<ToggleButton IsChecked="{Binding ElementName=Snack2, Path=IsActive, Mode=TwoWay}"
+                                Margin="10"/>
+				</StackPanel>
+
+				<materialDesign:Snackbar Name="Snack2" IsActive="True" HorizontalAlignment="Stretch">
+					<materialDesign:SnackbarMessage Content="{Binding Count}" ActionContent="カウントアップ">
+					</materialDesign:SnackbarMessage>
+				</materialDesign:Snackbar>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Grid.Row="1" Grid.Column="0" Header="MessageQueueを使う場合その１">
+			<Grid>
+				<StackPanel VerticalAlignment="Center">
+					<TextBlock Text="MessageQueueを使ってメッセージを表示する"/>
+					<TextBlock Text="「送る」ボタンを押すとメッセージキューにメッセージを送信する"/>
+					<Button Content="送る" Width="80" Command="{Binding SendMessageCommand}"/>
+				</StackPanel>
+
+				<materialDesign:Snackbar MessageQueue="{Binding MessageQueue1}"/>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Grid.Row="1" Grid.Column="1" Header="MessageQueueを使う場合その２">
+			<Grid>
+				<StackPanel VerticalAlignment="Center">
+					<TextBlock Text="MessageQueueを使ってAction付きメッセージを表示する"/>
+					<TextBlock Text="「送る」ボタンを押すとメッセージキューにメッセージを送信する"/>
+					<TextBlock Text="「カウントアップ」ボタンを押すと数値が上昇する"/>
+					<TextBlock Text="{Binding Total, StringFormat=ボタンを押した回数 {0}}"/>
+					<Button Content="送る" Width="80" Command="{Binding SendMessageCommand2}"/>
+
+				</StackPanel>
+
+				<materialDesign:Snackbar MessageQueue="{Binding MessageQueue2}"/>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Header="カラーバリエーション">
+			<StackPanel>
+				<StackPanel.Resources>
+					<ResourceDictionary>
+						<ResourceDictionary.MergedDictionaries>
+							<!-- ActionButtonStyleを使う為に必要 -->
+							<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml" />
+						</ResourceDictionary.MergedDictionaries>
+					</ResourceDictionary>
+				</StackPanel.Resources>
+				<materialDesign:Snackbar IsActive="True" Margin="10">
+					<materialDesign:SnackbarMessage Content="デフォルト(Accent)" ActionContent="Action"/>
+				</materialDesign:Snackbar>
+
+				<materialDesign:Snackbar IsActive="True" Margin="10"
+                                        ActionButtonStyle="{StaticResource MaterialDesignSnackbarActionLightButton}">
+					<materialDesign:SnackbarMessage Content="Primary Light" ActionContent="Action"/>
+				</materialDesign:Snackbar>
+
+				<materialDesign:Snackbar IsActive="True" Margin="10"
+                                        ActionButtonStyle="{StaticResource MaterialDesignSnackbarActionMidButton}">
+					<materialDesign:SnackbarMessage Content="Primary Mid" ActionContent="Action"/>
+				</materialDesign:Snackbar>
+
+				<materialDesign:Snackbar IsActive="True" Margin="10"
+                                        ActionButtonStyle="{StaticResource MaterialDesignSnackbarActionDarkButton}">
+					<materialDesign:SnackbarMessage Content="Primary Dark" ActionContent="Action"/>
+				</materialDesign:Snackbar>
+
+			</StackPanel>
+		</GroupBox>
+	</Grid>
+</Window>
